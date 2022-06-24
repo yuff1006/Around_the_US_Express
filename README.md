@@ -6,7 +6,9 @@
   
 `/routes` — routing files.  
   
-All other directories are optional and may be created by the developer if necessary.   
+`/controller` -  functions used in routing.
+
+`/helpers` - reading files.
   
 ## Running the Project  
   
