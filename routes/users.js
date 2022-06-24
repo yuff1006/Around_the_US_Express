@@ -1,38 +1,11 @@
 const router = require('express').Router();
-const path = require('path');
-const { getDataFromFile } = require('../helpers/files');
 
-const usersDataPath = path.join(__dirname, '..', 'data', 'users.json');
+const { getUsers, getUserById, getHomePage } = require('../controller/users');
 
-router.get('/users', (req, res) => {
-  getDataFromFile(usersDataPath)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => err);
-});
+router.get('/users', getUsers);
 
-router.get('/', (req, res) => {
-  res.status(404);
-  res.send({ message: 'Requested resource not found' });
-});
+router.get('/users/:id', getUserById);
 
-router.get('/users/:id', (req, res) => {
-  const selectedUser = users.filter((user) => user._id === req.params.id);
-  if (selectedUser) {
-    res.send(selectedUser);
-  } else {
-    res.status(404);
-    res.send({ message: 'User ID not found' });
-  }
-});
-
-router.get('/:anything', (req, res) => {
-  if (req.params.anything === 'users') {
-    res.send(users);
-  }
-  res.status(404);
-  res.send({ message: 'Requested resource not found' });
-});
+router.get('/', getHomePage);
 
 module.exports = router;
