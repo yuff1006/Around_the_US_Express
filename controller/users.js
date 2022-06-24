@@ -26,8 +26,5 @@ function getUserById(req, res) {
     })
     .catch((err) => res.status(500).send(err));
 }
-function getHomePage(req, res) {
-  res.status(404);
-  res.send({ message: 'Requested resource not found' });
-}
-module.exports = { getUsers, getUserById, getHomePage };
+
+module.exports = { getUsers, getUserById };
