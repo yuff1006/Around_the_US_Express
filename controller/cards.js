@@ -8,7 +8,9 @@ function getCards(req, res) {
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch(() => {
+      res.status(500).send('An error occured on the server');
+    });
 }
 
 module.exports = getCards;

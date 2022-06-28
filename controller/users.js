@@ -8,7 +8,7 @@ function getUsers(req, res) {
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch(() => res.status(500).send('An error occurred on the server'));
 }
 function searchUsers(users, req, res) {
   const selectedUser = users.filter((user) => user._id === req.params.id);
@@ -24,7 +24,7 @@ function getUserById(req, res) {
     .then((data) => {
       searchUsers(data, req, res);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch(() => res.status(500).send('An error occurred on the server'));
 }
 
 module.exports = { getUsers, getUserById };
