@@ -1,5 +1,6 @@
 const path = require('path');
 const { getDataFromFile } = require('../helpers/files');
+const { SERVER_ERROR } = require('../helpers/utils');
 
 const cardsDataPath = path.join(__dirname, '..', 'data', 'cards.json');
 
@@ -9,7 +10,7 @@ function getCards(req, res) {
       res.send(data);
     })
     .catch(() => {
-      res.status(500).send('An error occured on the server');
+      res.status(SERVER_ERROR).send('An error occured on the server');
     });
 }
 

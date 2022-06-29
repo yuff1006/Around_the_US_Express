@@ -1,9 +1,15 @@
 const express = require('express');
+// const mongoose = require('mongoose');
+
 const helmet = require('helmet');
 
 const app = express();
 app.use(helmet());
-
+// mongoose.connect('mongodb://localhost:27017/mydb', {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+// });
 const { PORT = 3000 } = process.env;
 
 const userRouter = require('./routes/users');

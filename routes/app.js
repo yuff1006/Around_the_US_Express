@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const getHomePage = require('../controller/app');
+const getHomePage = require('../controllers/app');
 
 router.get('/', getHomePage);
 
