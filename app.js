@@ -12,6 +12,8 @@ const userRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const homePageRouter = require('./routes/app');
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use('/', homePageRouter);
 app.use('/', userRouter);
 app.use('/', cardsRouter);

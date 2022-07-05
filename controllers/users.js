@@ -24,9 +24,10 @@ function getUserById(req, res) {
 
 function createNewUser(req, res) {
   const { name, about, avatar } = req.body;
+  console.log(req.body);
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch(() => res.status(SERVER_ERROR).send({ message: 'Error' }));
+    .catch((err) => res.status(SERVER_ERROR).send(err));
 }
 
 module.exports = { getUsers, getUserById, createNewUser };
