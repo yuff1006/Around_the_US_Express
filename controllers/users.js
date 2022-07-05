@@ -1,11 +1,9 @@
-const path = require('path');
-const { getDataFromFile } = require('../helpers/files');
 const { SERVER_ERROR, NOT_FOUND } = require('../helpers/utils');
-
-const usersDataPath = path.join(__dirname, '..', 'data', 'users.json');
+const User = require('../models/user');
 
 function getUsers(req, res) {
-  getDataFromFile(usersDataPath)
+  User.find()
+    .orFail()
     .then((data) => {
       res.send(data);
     })
@@ -13,23 +11,22 @@ function getUsers(req, res) {
       res.status(SERVER_ERROR).send('An error occurred on the server');
     });
 }
-function searchUsers(users, req, res) {
-  const selectedUser = users.filter((user) => user._id === req.params.id);
-  if (selectedUser) {
-    res.send(selectedUser);
-  } else {
-    res.status(NOT_FOUND);
-    res.send({ message: 'User ID not found' });
-  }
-}
 function getUserById(req, res) {
-  getDataFromFile(usersDataPath)
+  User.findById(req.params.id)
+    .orFail()
     .then((data) => {
-      searchUsers(data, req, res);
+      res.send(data);
     })
     .catch(() => {
-      res.status(SERVER_ERROR).send('An error occurred on the server');
+      res.status(NOT_FOUND).send({ message: 'User not found' });
     });
 }
 
-module.exports = { getUsers, getUserById };
+function createNewUser(req, res) {
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
+    .then((user) => res.send({ data: user }))
+    .catch(() => res.status(SERVER_ERROR).send({ message: 'Error' }));
+}
+
+module.exports = { getUsers, getUserById, createNewUser };
