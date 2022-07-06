@@ -6,7 +6,9 @@ function getCards(req, res) {
     .orFail()
     .then((data) => res.send(data))
     .catch(() => {
-      res.status(SERVER_ERROR).send('An error occured on the server');
+      res
+        .status(SERVER_ERROR)
+        .send({ message: 'An error occured on the server' });
     });
 }
 
@@ -17,7 +19,9 @@ function createCard(req, res) {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(BAD_REQUEST).send('Please make a valid request');
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
       }
     });
 }
@@ -28,9 +32,11 @@ function deleteCard(req, res) {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send('Please make a valid request');
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
       } else if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send('User not found');
+        res.status(NOT_FOUND).send({ message: 'User not found' });
       }
     });
 }
@@ -43,9 +49,11 @@ function likeCard(req, res) {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send('Card not found');
+        res.status(NOT_FOUND).send({ message: 'Card not found' });
       } else if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send('Please make a valid request');
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
       }
     });
 }
@@ -58,9 +66,11 @@ function unlikeCard(req, res) {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send('Card not found');
+        res.status(NOT_FOUND).send({ message: 'Card not found' });
       } else if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send('Please make a valid request');
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
       }
     });
 }

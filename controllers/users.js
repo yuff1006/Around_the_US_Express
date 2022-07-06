@@ -8,7 +8,9 @@ function getUsers(req, res) {
       res.send(data);
     })
     .catch(() => {
-      res.status(SERVER_ERROR).send('An error occurred on the server');
+      res
+        .status(SERVER_ERROR)
+        .send({ message: 'An error occurred on the server' });
     });
 }
 function getUserById(req, res) {
@@ -21,7 +23,7 @@ function getUserById(req, res) {
       if (err.name === 'CastError') {
         res.status(BAD_REQUEST).send('Please make a valid request');
       } else if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send('User not found');
+        res.status(NOT_FOUND).send({ message: 'User not found' });
       }
     });
 }
@@ -50,7 +52,7 @@ function updateUser(req, res) {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === { message: 'ValidationError' }) {
         res
           .status(BAD_REQUEST)
           .send({ message: 'Please make a valid request' });
