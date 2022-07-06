@@ -18,7 +18,11 @@ function getUserById(req, res) {
       res.send(data);
     })
     .catch((err) => {
-      res.status(NOT_FOUND).send(err.name);
+      if (err.name === 'CastError') {
+        res.status(BAD_REQUEST).send('Please make a valid request');
+      } else if (err.name === 'DocumentNotFoundError') {
+        res.status(NOT_FOUND).send('User not found');
+      }
     });
 }
 
@@ -35,4 +39,43 @@ function createNewUser(req, res) {
     });
 }
 
-module.exports = { getUsers, getUserById, createNewUser };
+function updateUser(req, res) {
+  const { name, about } = req.body;
+  const owner = req.user._id;
+  User.findByIdAndUpdate(
+    owner,
+    { name, about },
+    { new: true, runValidators: true },
+  )
+    .orFail()
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
+      }
+    });
+}
+
+function updateAvatar(req, res) {
+  const { avatar } = req.body;
+  const owner = req.user._id;
+  User.findByIdAndUpdate(owner, { avatar }, { new: true, runValidators: true })
+    .orFail()
+    .then((user) => res.send({ data: user }))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res
+          .status(BAD_REQUEST)
+          .send({ message: 'Please make a valid request' });
+      }
+    });
+}
+module.exports = {
+  getUsers,
+  getUserById,
+  createNewUser,
+  updateUser,
+  updateAvatar,
+};
