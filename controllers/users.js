@@ -24,10 +24,11 @@ function getUserById(req, res) {
 
 function createNewUser(req, res) {
   const { name, about, avatar } = req.body;
-  console.log(req.body);
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch((err) => res.status(SERVER_ERROR).send(err));
+    .catch(() => {
+      res.status(SERVER_ERROR).send('An error occurred on the server');
+    });
 }
 
 module.exports = { getUsers, getUserById, createNewUser };

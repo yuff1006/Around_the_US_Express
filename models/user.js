@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const regexForAvatarLink =
-  /https?:\/\/(www\.)?\S+\/[\-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
+  /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
 
 const userSchema = new mongoose.Schema({
   name: {

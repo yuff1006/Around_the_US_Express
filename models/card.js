@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const regexForImageLink =
-  /https?:\/\/(www\.)?\S+\/[._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
+  /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -33,4 +33,4 @@ const cardSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('user', cardSchema);
+module.exports = mongoose.model('card', cardSchema);
