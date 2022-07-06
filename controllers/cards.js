@@ -1,4 +1,4 @@
-const { SERVER_ERROR } = require('../helpers/utils');
+const { SERVER_ERROR, BAD_REQUEST } = require('../helpers/utils');
 const Card = require('../models/card');
 
 function getCards(req, res) {
@@ -12,15 +12,16 @@ function getCards(req, res) {
 
 function createCard(req, res) {
   const { name, link } = req.body;
-  Card.create({ name, link })
+  const owner = req.user._id;
+  Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
-    .catch(() => {
-      res.status(SERVER_ERROR).send('An error occurred on the server');
+    .catch((err) => {
+      res.status(BAD_REQUEST).send(err);
     });
 }
 
 function deleteCard(req, res) {
-  Card.findByIdAndRemove(req.params.id)
+  Card.findByIdAndRemove(req.params.cardId)
     .then((card) => res.send({ data: card }))
     .catch((err) => res.status(SERVER_ERROR).send(err));
 }
