@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const regexForImageLink =
-  /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
+const regexForImageLink = /https?:\/\/(www\.)?\S+\/[-._~:/?%#[\]@!$&'()*+,;=\w]*#?$/;
 
 const cardSchema = new mongoose.Schema({
   name: {

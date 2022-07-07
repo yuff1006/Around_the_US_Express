@@ -1,14 +1,12 @@
-const { SERVER_ERROR, BAD_REQUEST, NOT_FOUND } = require('../helpers/utils');
+const handleError = require('../helpers/utils');
 const Card = require('../models/card');
 
 function getCards(req, res) {
   Card.find()
     .orFail()
     .then((data) => res.send(data))
-    .catch(() => {
-      res
-        .status(SERVER_ERROR)
-        .send({ message: 'An error occured on the server' });
+    .catch((err) => {
+      handleError(err, req, res);
     });
 }
 
@@ -18,11 +16,7 @@ function createCard(req, res) {
   Card.create({ name, link, owner })
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 
@@ -31,13 +25,7 @@ function deleteCard(req, res) {
     .orFail()
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      } else if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send({ message: 'User not found' });
-      }
+      handleError(err, req, res);
     });
 }
 
@@ -48,13 +36,7 @@ function likeCard(req, res) {
     .orFail()
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send({ message: 'Card not found' });
-      } else if (err.name === 'CastError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 
@@ -65,13 +47,7 @@ function unlikeCard(req, res) {
     .orFail()
     .then((card) => res.send({ data: card }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send({ message: 'Card not found' });
-      } else if (err.name === 'CastError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 

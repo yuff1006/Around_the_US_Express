@@ -1,30 +1,20 @@
-const { SERVER_ERROR, NOT_FOUND, BAD_REQUEST } = require('../helpers/utils');
+const handleError = require('../helpers/utils');
 const User = require('../models/user');
 
 function getUsers(req, res) {
   User.find()
     .orFail()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch(() => {
-      res
-        .status(SERVER_ERROR)
-        .send({ message: 'An error occurred on the server' });
+    .then((users) => res.send({ data: users }))
+    .catch((err) => {
+      handleError(err, req, res);
     });
 }
 function getUserById(req, res) {
   User.findById(req.params.id)
     .orFail()
-    .then((data) => {
-      res.send(data);
-    })
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(BAD_REQUEST).send('Please make a valid request');
-      } else if (err.name === 'DocumentNotFoundError') {
-        res.status(NOT_FOUND).send({ message: 'User not found' });
-      }
+      handleError(err, req, res);
     });
 }
 
@@ -33,30 +23,18 @@ function createNewUser(req, res) {
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 
 function updateUser(req, res) {
   const { name, about } = req.body;
   const owner = req.user._id;
-  User.findByIdAndUpdate(
-    owner,
-    { name, about },
-    { new: true, runValidators: true },
-  )
+  User.findByIdAndUpdate(owner, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === { message: 'ValidationError' }) {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 
@@ -67,11 +45,7 @@ function updateAvatar(req, res) {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res
-          .status(BAD_REQUEST)
-          .send({ message: 'Please make a valid request' });
-      }
+      handleError(err, req, res);
     });
 }
 module.exports = {
